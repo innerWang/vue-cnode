@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>组件的使用方法</title>
+</head>
+
+<body>
+  <div id="app" style="margin:30px;border:1px solid red;">
+    <my-component></my-component>
+    <app-component></app-component>
+
+    ****html标签限制 vue的模板************ <br>
+    ---table标签中只能有tr td tbody等元素, 此时需要用 is 属性----
+    <table>
+        <!-- <my-component></my-component> -->
+        <tbody is="my-component"></tbody>
+    </table>
+
+
+    <hr>
+    <btn-component></btn-component>
+    <btn-component></btn-component>
+
+
+  </div>
+  <div id="bpp" style="margin:30px;border:1px solid red;">
+    <my-component></my-component>
+    <!-- <app-component></app-component>   会报错-->
+  </div>
+
+ 
+
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script>
+    /* 
+    Vue.component(tag,{
+      template:'<div></div>'
+    }) */
+    // 全局注册组件
+    Vue.component('my-component',{
+      template:'<div>我是一个注册的组件</div>'
+    })
+
+    var app = new Vue({
+      el:'#app',
+      components:{
+        'app-component':{
+          template:'<div>我是一个app局部注册的组件</div>'
+        },
+        'btn-component':{
+          template:'<button @click="count++">{{count}}</button>',
+          data:function(){
+            return {
+              count:0
+            }
+          },
+        },
+      },
+      data:{
+
+      }
+    })
+    var bpp = new Vue({
+      el:'#bpp',
+      data:{
+
+      }
+    })
+  </script>
+</body>
+
+</html>

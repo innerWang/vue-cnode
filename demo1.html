@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>数据绑定 </title>
+</head>
+<body>
+  <div id="app">
+    {{msg}}
+  </div>
+
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script>
+    //创建一个Vue实例, Vue实例需要绑定DOM节点
+    var app = new Vue({
+      el: "#app",  /* el: 必不可少，指定页面中已经存在的DOM元素，用于挂载Vue实例，一般使用css选择器语法*/
+      /*data 用于声明需要双向绑定的数据*/
+      data: {
+        msg:'vue应用开始了',
+        a:10
+      },
+      created:function(){
+        alert('创建完成，尚未挂载到DOM')   // 此时 {{msg}} 不会显示data里面的内容
+      },
+      mounted: function(){
+        console.log('已经挂载到DOM')
+      },
+
+    });
+
+    //访问Vue实例的属性
+    console.log(app.$el)
+    console.log(app.$data)
+
+    // 访问data的属性
+    console.log(app.msg)
+    console.log(app.a)
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

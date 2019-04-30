@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue.js的内置指令</title>
+  <style>
+    [v-cloak]{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <hr>
+    ********** <b>v-cloak</b>: 解决初始化慢导致页面闪动 ***********   <br>
+    <div v-cloak>{{msg}}</div>
+
+    <br>
+    <hr>
+    ********** <b>v-once</b>:  定义它的元素和组件只渲染一次，即使改变oncedata也不会重新渲染***********   <br>
+    <div v-once>{{oncedata}}</div>
+
+    <br><hr>
+    **************v-model 针对input textarea select 元素创建双向数据绑定*********************
+    <div>
+      <input type="text" v-model="inputMsg" placeholder="输入一些内容">
+      <div> 输入的内容是：{{inputMsg}} </div>
+    </div>
+
+     <br>  <hr>
+    **************条件渲染1. <b>v-if</b> ,其后接等号，等号后的内容必须是布尔值*********************** <br>
+    <div v-if="6<3">{{apple}}</div>
+    <div v-else-if="9<5">{{orange}}</div>
+    <div v-else>{{banana}}</div>
+
+    ----应用实例，点击按钮切换为姓名框或者密码框，主要需要指定key，不然input组件会复用---- <br>
+    <div v-if="type==='name'">
+      用户名： <input type="text" placeholder="请输入用户名" name="username" key='name'>
+    </div>
+    <div v-else>
+      密码：   <input type="text" placeholder="请输入密码" name="psd" key='psd'>
+    </div>
+    <div>
+      <button @click='handleClick'>点我切换</button>
+    </div>
+    <br>
+    ***************条件渲染2： <b>v-show</b>  显示与否取决于布尔值*************************** <br>
+    <div v-show="9>a"> v-show渲染</div>
+
+    <br><hr>
+    ****************列表渲染指令: <b>v-for</b> ********************* <br>
+    ********* 1. 遍历数组 ***********
+    <ul>
+      <li v-for=" method in vueMethods">{{method}}</li>
+    </ul>
+    带索引的写法：括号的第一个变量代表item，第二个变量代表idx
+    <ul>
+      <li v-for=" (method,idx) in vueMethods">{{idx}} : {{method}}</li>
+    </ul>
+    *********** 2. 遍历对象的属性 **********************
+    <div v-for="value in person"> {{value}}</div>
+    <br>
+    拿到对象的v-k-i: value-key-index 
+    <div v-for="(value,key,idx) in person"> {{idx}} : {{key}} - {{value}}</div>
+    
+    <br><hr>
+    ***************数组更新： app.arr.push('eraser')会引起数组更新，页面重新渲染*********************<br>
+      <div v-for="supply in arr">{{supply}}</div>
+      <button @click="sortArr">点我对数组成员按长度排序</button>
+      <button @click="reverseArr">点我进行数组反转</button>
+      <!-- 如下两种方式直接修改的方式，Vue.js都是检测不到的 -->
+      <button @click="changeFirst">点我改变数组的第一项</button>
+      <button @click="changeArrLength">点我改变数组长度为1</button>
+
+    <br><hr>
+    **********使用数组的过滤方法 filter() 和计算属性***************** <br>
+    返回字符串中含有oo的项 : {{matchOO}}
+
+    <br><hr>
+    ********************方法与事件**************************** <br>
+     点击次数：{{ count}} 
+     <button @click="addCount()">点我每次加1</button>
+     <button @click="addCount(3)">点我每次加3</button>
+
+     <br><br>
+     *************stop 阻止事件冒泡的用法**************** <br>
+     <div @click="divClick" style="width:100px;height:100px;background:blue;">
+       <button @click.stop="btnClick">点我</button>
+     </div>
+     <br>
+     **************** prevent 阻止默认 ************** <br>
+     每次提交表单都会重载页面 <br>
+     <form action="" @submit.prevent="submitForm">
+       <button type="submit" >点我提交表单</button>
+     </form>
+     <br>
+     ****************self 只有点击自己，才会执行回调，冒泡上来的不执行 ************** <br>
+     <div @click.self="divClick" style="width:100px;height:100px;background:blue;">
+        <button @click="btnClick">点我</button>
+      </div>
+    <br>
+    *****************once ******************* <br>
+    <button @click="btnClick">点多少次就执行多少次回调函数</button>
+    <button @click.once="btnClick">仅执行一次回调函数</button>
+
+
+    <br><br> <hr>
+    **************监听键盘事件**************** <br>
+    <input type="text" @keyup.13="submit">
+    <input type="text" @keyup.enter="submit">
+
+    <br><br><br>
+
+  </div>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el:'#app',
+      data:{
+        msg:'村里有个姑娘叫小芳',
+        oncedata:'长得美丽又大方',
+        inputMsg:'',
+
+        apple:'苹果',
+        banana:'香蕉',
+        orange:'橘子',
+
+        type:'name',
+        a:3,
+
+        vueMethods:['多看','多读','多写'],
+        person:{name:'zhangsan',age:23,sex:'female',birth:'10-23'},
+
+        arr:['book','pen','pencil'],
+
+        count: 0
+
+      },
+      computed:{
+        matchOO: function(){
+          return this.arr.filter(item => item.match(/oo/g))
+        }
+      },
+      methods:{
+        handleClick:function(){
+          this.type = this.type === 'name' ? 'psd' :'name'
+        },
+        sortArr:function(){
+          // 从小到大排
+          //this.arr.sort((a,b)=> a.length-b.length)
+
+          //从大到小排
+          this.arr.sort((a,b)=> b.length-a.length)
+        },
+        reverseArr: function(){
+          this.arr.reverse()
+        },
+        changeFirst:function(){
+          //此种方式 Vue不支持，需使用 Vue.set()
+          //this.arr[0]='car';
+          Vue.set(this.arr,0,'car')
+        },
+        changeArrLength:function(){
+          //此种方式 Vue不支持，需使用 array.splice()
+          //this.arr.length = 1
+          this.arr.splice(1)
+        },
+        addCount: function(count=1){
+          this.count += count
+        },
+        divClick:function(){
+          console.log('div被点击了')
+        },
+        btnClick:function(){
+          console.log('btn被点击了')
+        },
+        submitForm:function(){
+          console.log('此时有了prevent，我不重载了，页面也不会刷新了')
+        },
+        submit: function(){
+          console.log('你按下了enter键')
+        }
+
+
+      }
+    })
+  </script>
+</body>
+</html>

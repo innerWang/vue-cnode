@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>兄弟组件通信</title>
+  <style>
+    #app{
+      padding: 20px 30px;
+      border: 1px solid peru;
+      margin: 100px auto;
+      width: 600px;
+    }
+  </style>
+</head>
+<body>
+    <div id="app">
+      <component-a ref="a"></component-a>
+      <component-b ref="b"></component-b>
+      <hr>
+
+      <child-component ref="c"></child-component>  ---- {{msg}}
+
+      <hr>
+      <button @click="getChildData">我是父组件的按钮，我要拿到子组件的内容</button> ---{{fromChild}}
+
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script>
+
+      Vue.component('component-a',{
+        template:'<div><button @click="handle">点击我给B组件传递数据</button></div>',
+        data: function(){
+          return {
+            aaa:'我是来自A的内容',
+            msg:'我是a中的msg'
+          }
+        },
+        methods:{
+          handle:function(){
+            this.$root.bus.$emit('lalala',this.aaa);
+          }
+        }
+      })
+
+      Vue.component('component-b',{
+        template:'<div>我是B，在等A发消息</div>',
+        data: function(){
+          return {
+            msg:'我是B中的msg'
+          }
+        },
+        created:function(){
+          // 在创建的时候监听事件
+          this.$root.bus.$on('lalala',function(value){
+           console.log(value)
+          })
+        }
+      })
+
+      Vue.component('child-component',{
+        template:'<button @click="setFather">点我修改父亲的数据</button>',
+        methods:{
+          setFather:function(){
+            this.$parent.msg = '数据已经修改了'
+          }
+        },
+        data: function(){
+          return {
+            msg:'我是c中的msg'
+          }
+        },
+      })
+      var app = new Vue({
+        el:'#app',
+        data:{
+          bus:new Vue(),
+          msg:'数据还未修改',
+          fromChild:'未拿到儿子的数据'
+        },
+        methods:{
+          getChildData:function(){
+            //用来拿子组件中的内容 ----子组件属性对应 ref，此处用refs
+              this.fromChild = this.$refs.a.msg;
+          }
+        }
+      })
+    </script>
+</body>
+</html>

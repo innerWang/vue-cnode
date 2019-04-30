@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>作用域插槽在render函数中的应用</title>
+  <style>
+    #app {
+      padding: 20px 30px;
+      border: 1px solid peru;
+      margin: 100px auto;
+      width: 600px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <child > 
+      <template scope="prop">
+        {{prop.text}} <br>
+        {{prop.msg}}
+      </template>
+    </child>
+    
+  </div>
+
+
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script>
+    Vue.component('child',{
+      render: function(createElement){
+        // 相当于先创建一个div标签
+        // <div><slot :text="text"></slot></div>
+        return createElement('div',this.$scopedSlots.default({
+          text:'我是子组件传递过来的数组',
+          msg: 'scopetext'
+        }))
+      }
+    })
+
+ 
+    var app = new Vue({
+      el: '#app',
+      data: {
+
+      },
+      methods:{
+        
+      }
+    })
+  </script>
+</body>
+
+</html>

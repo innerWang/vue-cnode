@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>render函数---- createElement第二个参数</title>
+  <style>
+    #app {
+      padding: 20px 30px;
+      border: 1px solid peru;
+      margin: 100px auto;
+      width: 600px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <child></child>
+  </div>
+
+
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script>
+
+  
+    Vue.component('child',{
+      render:function(createElement){
+        // createElement()的第二个参数可选,它是一个数据对象，即只能是object      
+         return  createElement({
+           template:'<div>测试第二个参数哦</div>'
+         },{
+           'class':{
+             foo:true,
+             bar:false
+           },
+           style:{
+             color:'red',
+             fontSize: '32px',
+           },
+           //正常的html特性
+           attrs:{
+             id:'foo',
+             src:'xxxxx'
+           },
+           //用来写原生的dom属性
+           domProps:{
+             innerHTML:'<span style="color:blue">我是蓝色</span>'
+           }
+         });
+
+      }
+    })
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+       
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>在render函数中使用props传递数据</title>
+  <style>
+    #app {
+      padding: 20px 30px;
+      border: 1px solid peru;
+      margin: 100px auto;
+      width: 600px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <button @click="switchShow">点击我切换图片</button>
+    show: {{show}}
+    <child :show="show">
+      
+    </child>
+  </div>
+
+
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script>
+
+  
+    Vue.component('child',{
+      props:['show'],
+      render: function(createElement){
+        var imgSrc;
+        if(this.show){
+          imgSrc='https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1556243494&di=64283c27b63d8c8de1c11a2b4098ceca&src=http://img3.redocn.com/tupian/20141229/daimaozidenanhaitouxiangxianmiao_3720144.jpg'
+        }else{
+          imgSrc='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556253574850&di=1758bb340c54dc874afebab7e6be9756&imgtype=0&src=http%3A%2F%2Fpic102.nipic.com%2Ffile%2F20160624%2F22734439_173946745000_2.jpg'
+        }
+        return createElement('img',{
+          attrs:{
+            src:imgSrc
+          },
+          style:{
+            width:'200px'
+          }
+        })
+      }
+    })
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+       show:false
+      },
+      methods:{
+        switchShow:function(){
+          this.show = !this.show
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

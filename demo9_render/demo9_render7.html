@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>在render函数与 v-model结合</title>
+  <style>
+    #app {
+      padding: 20px 30px;
+      border: 1px solid peru;
+      margin: 100px auto;
+      width: 600px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <child :msg="msg" @input="showMsg"> 
+    </child>
+    <br> {{msg}}
+    <br>
+
+    *********使用 v-model******** <br>
+    <child1 :msg="msg1" v-model="msg1"> 
+      </child1>
+      <br> {{msg1}}
+    
+  </div>
+
+
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+  <script>
+
+  
+    Vue.component('child',{
+      props:['msg'],
+      render: function(createElement){
+        var self=this; // 指的是当前的vue组件
+        //console.log(this)
+        return createElement('input',{
+          domProps:{
+            value: self.msg
+          },
+          on:{
+            input:function(e){
+              //console.log(this)  ----此处this是window
+              self.$emit('input',e.target.value)
+            }
+          }
+        })
+      }
+    })
+
+    Vue.component('child1',{
+      props:['msg'],
+      render: function(createElement){
+        var self=this; // 指的是当前的vue组件
+        //console.log(this)
+        return createElement('input',{
+          domProps:{
+            value: self.msg
+          },
+          on:{
+            input:function(e){
+              //console.log(this)  ----此处this是window
+              self.$emit('input',e.target.value)
+            }
+          }
+        })
+      }
+    })
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+       msg:'first msg',
+       msg1:"another msg"
+      },
+      methods:{
+        showMsg:function(value){
+          this.msg= value
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

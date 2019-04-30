@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>自定义指令</title>
+  <style>
+    #app{
+      padding: 20px 30px;
+      border: 1px solid peru;
+      margin: 100px auto;
+      width: 600px;
+    }
+  </style>
+</head>
+<body>
+    <div id="app">
+      自动获取焦点  ： <input type="text" v-focus> <br>
+      不自动获取焦点： <input type="text">
+
+
+      <br> ******* <b> &lt;div v-cuihua:goudan.a.b.c = "obq" &gt;&lt;/div&gt; </b>  ***********<br>
+      <div v-cuihua:goudan.a.b.c = "obq">
+
+      </div>
+
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script>
+      Vue.directive('focus',{
+        //指令的选项
+        inserted: function(el){
+          el.focus()
+        }
+      });
+
+      Vue.directive('cuihua',{
+        bind:function(el,binding,vnode){
+          var keys = [];
+          for(var key in vnode){
+            keys.push(key)
+          }
+          el.innerHTML = `
+            binding.name ----- ${binding.name} <br>
+            binding.value ----- ${binding.value} <br>
+            binding.oldValue ----- ${binding.oldValue} <br>
+            binding.expression ----- ${binding.expression} <br>
+            binding.arg ----- ${binding.arg}<br>
+            binding.modifiers ----- ${JSON.stringify(binding.modifiers)}<br>
+            vnode中的keys ----- ${keys.join('---')}<br>  
+          `;
+        }
+      })
+
+      var app = new Vue({
+        el:'#app',
+        data:{
+          obq:'我是值哦'
+        }
+      })
+    </script>
+</body>
+</html>

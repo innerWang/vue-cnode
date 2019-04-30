@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>动态组件</title>
+  <style>
+    #app{
+      padding: 20px 30px;
+      border: 1px solid peru;
+      margin: 100px auto;
+      width: 600px;
+    }
+  </style>
+</head>
+<body>
+    <div id="app">
+      <component :is="thisView"></component>
+      <button @click="handView('A')">A</button>
+      <button @click="handView('B')">B</button>
+      <button @click="handView('C')">C</button>
+      <button @click="handView('D')">D</button>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script>
+      // 需求，通过点击不同的按钮切换不同的视图
+      Vue.component('componenta',{
+        template:'<div>床前明月光</div>'
+      })
+      Vue.component('componentb',{
+        template:'<div>疑是地上霜</div>'
+      })
+      Vue.component('componentc',{
+        template:'<div>举头望明月</div>'
+      })
+      Vue.component('componentd',{
+        template:'<div>低头思故乡</div>'
+      })
+
+      var app = new Vue({
+        el:'#app',
+        data:{
+          thisView:'componenta'
+        },
+        methods:{
+          handView: function(x){
+            this.thisView = 'component'+x.toLowerCase()
+          }
+        }
+      })
+    </script>
+</body>
+</html>

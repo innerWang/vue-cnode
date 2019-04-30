@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>表单与v-model</title>
+</head>
+<body>
+    <div id="app">
+      <hr>
+      *************** v-model与input********************** <br>
+      <!-- input框的value与data中的value实现双向绑定，当input的输入变化时，data中的属性跟着变化，
+      页面所渲染的value也会跟着变化 -->
+      <div>
+        <input type="text" v-model="value" value="aaa">
+        <div> 输入的内容是： {{value}} </div>
+      </div>
+
+      *************** v-model与 textarea ********************** <br>
+      <!-- 下面示例中，textarea 由于绑定了v-model，则不再关心初始化的值 ，仅依赖于绑定的数据-->
+      <textarea name="" id="" cols="30" rows="10" v-model="textMsg">我是多行文本的初始化值</textarea>
+      <div> 文本框输入的内容是：{{textMsg}} </div>
+
+      <br><hr><br>
+      ****************单选框 ************ <br>
+      单个单选框：<br>
+      用v-bind绑定一个布尔值： <input type="radio" name="" v-bind:checked="oneradio">已审核 <br>
+      <!-- 用v-model绑定一个布尔值是不生效的： <input type="radio" name="" v-model="oneradio">已审核 <br> -->
+
+      多个单选框： 使用v-model绑定选中的单选框的value值
+      <input type="radio" name="multiRadio" value="一班" v-model="checkName"> 一班
+      <input type="radio" name="multiRadio" value="二班" v-model="checkName"> 二班
+      <input type="radio" name="multiRadio" value="三班" v-model="checkName"> 三班
+      <br> 现在选中的是 ----- {{checkName}}
+
+      <br><br><hr><br>
+      ****************复选框 ************ <br>
+      单个复选框：可以使用v-bind或者 v-model <br>
+      使用v-bind:   <input type="checkbox" v-bind:checked="onechecked"> 已审核 <br>
+      使用v-model:  <input type="checkbox" v-model="onechecked"> 已审核 <br>
+
+      多个复选框： 
+      <input type="checkbox" value="鸡" v-model='checks'>鸡
+      <input type="checkbox" value="鸭" v-model='checks'>鸭
+      <input type="checkbox" value="鱼" v-model='checks'>鱼
+      <br> 现在选中了-------- {{checks}}
+
+      <br><br><hr><br>
+      ****************单选框 ************ <br>
+      单选的下拉框： 
+      <select name="" id="" v-model="selected">
+        <option value="一班">一班</option>
+        <option value="二班">二班</option>
+        <option value="三班">三班</option>
+      </select>  现在选中的是 ------ {{ selected }}
+
+      <br><br><br><br><br><br>
+      多选的下拉框： 
+      <select name="" id="" v-model="selected1" multiple>
+        <option value="一班">一班</option>
+        <option value="二班">二班</option>
+        <option value="三班">三班</option>
+      </select>  现在选中的是 ------ {{ selected1 }}
+
+      
+      <hr><br>
+      ***************************绑定值********************* <br>
+
+      单个单选框： <input type="radio" v-model="picked" v-bind:value="value">  {{picked}}
+      <br>----------------- <br>
+      单个复选框： <input type="checkbox" v-model="toggle" :true-value="value1" :false-value="value2"> {{toggle}}
+      <br> 被选中： {{toggle == value1}}
+      <br> 未被选中： {{toggle == value2}}
+      <br>----------------- <br>
+      下拉框： 
+      <select name="" id="" v-model="selected2" :value="{num:111}">
+        <option value="一班">一班</option>
+        <option value="二班">二班</option>
+        <option value="三班">三班</option>
+      </select>  现在选中的是 ------ {{ selected2 }}  ---- {{ typeof selected2}}
+
+      <br><br>
+      又是一个下拉框： 
+      <select name="" id="" v-model="selected3" >
+          <option :value="{num:111}">一班</option>
+          <option :value="{num:222}">二班</option>
+          <option :value="{num:333}">三班</option>
+        </select>  现在选中的是 ------ {{ selected3 }}  ---- {{ typeof selected3}}
+      
+
+        <hr><br>
+        ***************************修饰符********************* <br>
+        ****** lazy ******* <br>
+        <input type="text" v-model="msg111" > ----{{msg111}}
+        <br>
+        <input type="text" v-model.lazy="msg222" > ----{{msg222}}
+        <br>
+        ****** number ******* <br>
+        <input type="text" v-model.number="isNum">---{{isNum}}---{{ typeof isNum }} <br>
+        <br>
+        ****** trim ******* <br>
+        <input type="text" v-model.trim="trimStr"> {{trimStr.split('').length}}
+
+
+
+
+      <br><br><br><br><br><br><br><br>
+
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script>
+      var app = new Vue({
+        el:'#app',
+        data:{
+          value:'',
+          textMsg:'',
+
+          oneradio:true,
+          checkName:'二班',
+
+          onechecked:true,
+          checks:[],
+
+          selected: '',
+          selected1:[],
+
+          picked: true,
+          value: '111',
+
+          toggle:true,
+          value1:'我被选中了',
+          value2:'我没有被选中',
+
+          selected2: '',
+          selected3:'',
+
+          msg111:'',
+          msg222:'',
+
+          isNum:'',
+
+          trimStr:''
+        }
+      })
+    </script>
+</body>
+</html>

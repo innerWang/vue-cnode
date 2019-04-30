@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>v-bind与class以及style的绑定</title>
+  <style>
+    .divStyle{
+      background: #efacb3;
+      width: 50px;
+      height: 100px;
+    }
+    .borderStyle{
+      border: 15px solid burlywood;
+    }
+    .btnBackground{
+      background: #efacb3;
+    }
+    .active{
+      background: paleturquoise;
+    }
+    .error{
+      color: red;
+    }
+  </style>
+</head>
+<body>
+    <div id="app">
+      ------v-bind的作用是：绑定活的属性------- <br>
+      ------1.变量语法-------------------------- <br>
+      <a v-bind:href="url">点我跳转到百度</a>
+      <img :src="imgUrl" alt="">
+
+      <hr><br>
+      ************绑定class************************* <br>
+      ------1.对象语法: class要写为一个对象，对象的键是类名，值是布尔值--------- <br>
+      <div  v-bind:class="{divStyle:isActive,borderStyle:isBorder}"></div>
+      <button :class="{btnBackground:isPink}" @click="changeColor">点我切换我的背景颜色</button>
+      <div :class="classNames">我是对象绑定class</div>
+      <br>
+      ------2.数组语法: 数组中的成员直接对应类名--------- <br>
+      <div :class="[activeClass,errorClass]">我是数组绑定class</div>
+      <br>
+      --------3.数组和对象混用,第一个成员是对象，第二个成员是数组元素----------------  <br>
+      <div :class="[{active:isActive},errorClass]">数组和对象绑定class混用</div>
+
+      <hr><br>
+      *****************绑定内联样式**************************** <br>
+      ----1.对象语法：键代表style的属性值，值就代表属性对应的值---- <br>
+      <div v-bind:style="{color:color,fontSize:fontSize}">v-bind绑定style属性，对象语法</div>
+      <br>
+      ----2.数组语法：不常用------------------ <br>
+      <div v:bind:style="[styleA,styleB]">使用数组语法绑定style</div>
+      <br>
+      <br>
+      <br>
+
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script>
+      var app = new Vue({
+        el:'#app',
+        data:{
+          url:'http://www.baidu.com',
+          imgUrl:'https://www.baidu.com/img/xinshouye_c9d9de2ff40fa160f807f75f34db4ad0.gif',
+
+          isActive:true,
+          isBorder:false,
+          isPink:true,
+
+          activeClass:'active',
+          errorClass:'error',
+
+          color: 'red',
+          fontSize: '20px'
+        },
+        computed:{
+          classNames:function(){
+            return {
+              active: this.isActive && !this.isBorder
+            }
+          }
+        },
+        methods:{
+          changeColor:function(){
+            this.isPink = !this.isPink;
+          }
+        }
+      })
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

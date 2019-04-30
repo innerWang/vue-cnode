@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>数据验证</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 此处传递my-msg必须写为短横线的形式 -->
+        <my-component my-msg="lalala"></my-component>
+        <type-component :a="a" :b="b" :c="c" :d="d" :e="e"></type-component>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script>
+      Vue.component('my-component',{
+        // 此处 myMsg可以写为驼峰式或者中横线连接,都能解析
+        props:['my-msg'],
+        // 此处 template必须使用驼峰式
+        template:'<div>{{aBC}}</div>',
+        data:function(){
+          return {
+            // 此处引用 myMsg必须是驼峰式
+            aBC:this.myMsg
+          }
+        }
+      })
+
+      Vue.component('type-component',{
+        props:{
+          a: String,
+          b: [String,Number],
+          c: {
+            type: Boolean, // 类型
+            default: true,  // 默认值
+          },
+          d: {
+            type: Number,
+            required: true 
+          },
+          e: {
+            type: Array,
+            default: function(){
+              return 666
+            }
+          },
+          // 自定义验证函数，需要用到validator选项
+          f:{
+            validator: function(value){
+              return  value>10
+            }
+          },
+          g:{
+            type: Function
+          }
+        },
+        template:'<div>{{a}}--{{b}}--{{c}}---{{d}}---{{e}}</div>',
+        data:function(){
+          return {
+
+          }
+        }
+      })
+
+      var app = new Vue({
+        el:'#app',
+        data:{
+          a:1,
+          b: 666,
+          c: true,
+          d: 123,
+          e: [],
+          f:88,
+          g: console.log()
+        }
+      })
+    </script>
+</body>
+</html>
